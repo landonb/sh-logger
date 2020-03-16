@@ -1,0 +1,11 @@
+{
+  "name": "sh-logger",
+  "version": "0.0.1",
+  "description": "Colorful Bash Logger",
+  "scripts": [ "bin/logger.sh" ],
+  "install": "make install",
+  "dependencies": {
+    "landonb/sh-colorlib": "master"
+  }
+}
+
