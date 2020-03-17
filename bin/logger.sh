@@ -10,12 +10,14 @@ source_deps () {
 
   _source_it () {
     local file="$1"
-    if [ -f "./deps/${file}" ]; then
-      # E.g., because, e.g., `bpkg install landonb/sh-colors`.
-      . "./deps/${file}"
-    elif command -v "${file}" > /dev/null; then
-      # E.g., because user put on PATH.
+    local depd="$2"
+    if command -v "${file}" > /dev/null; then
+      # Use version found on PATH.
       . "${file}"
+    elif [ -f "../${depd}/${file}" ]; then
+      # Fallback on local deps/ copy.
+      # NOTE: `dash` complains if missing './'.
+      . "../${depd}/${file}"
     else
       >&2 echo "MISSING: ‘${file}’ not found in ./deps or on PATH."
       depsnok=true
@@ -23,7 +25,7 @@ source_deps () {
   }
 
   # https://github.com/landonb/sh-colors
-  _source_it "colors.sh"
+  _source_it "colors.sh" "deps/sh-colors/bin"
 
   ${depsnok} && exit 1 || return 0
 }
