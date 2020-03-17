@@ -44,7 +44,7 @@ export_log_levels () {
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-_echo () {
+_sh_logger_echo () {
   [ "$(echo -e)" = '' ] && echo -e "${@}" || echo "${@}"
 }
 
@@ -65,7 +65,7 @@ log_msg () {
     [ ${FCN_LEVEL} -ge ${LOG_LEVEL_ERROR} ] && invert_maybe=$(bg_hotpink)
     local echo_msg
     echo_msg="${FCN_COLOR}$(attr_underline)[${FCN_LABEL}]$(attr_reset) ${RIGHT_NOW} ${bold_maybe}${invert_maybe}$@$(attr_reset)"
-    _echo "${echo_msg}"
+    _sh_logger_echo "${echo_msg}"
   fi
 }
 
