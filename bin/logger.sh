@@ -15,28 +15,34 @@ source_deps () {
   . ${curdir}/color_funcs.sh
 }
 
-# The Python logging library defines the following levels,
-# along with some levels I've slid in.
-LOG_LEVEL_FATAL=186 # [*probably what it really should be]
-LOG_LEVEL_CRITICAL=50
-LOG_LEVEL_FATAL=50 # [*aliases CRITICAL]
-LOG_LEVEL_ERROR=40
-LOG_LEVEL_WARNING=30 # [*also WARN]
-LOG_LEVEL_NOTICE=25 # [*new]
-LOG_LEVEL_INFO=20
-LOG_LEVEL_DEBUG=15
-LOG_LEVEL_TRACE=10 # [*new]
-LOG_LEVEL_VERBOSE1=9 # [*new]
-LOG_LEVEL_VERBOSE2=8 # [*new]
-LOG_LEVEL_VERBOSE3=7 # [*new]
-LOG_LEVEL_VERBOSE4=6 # [*new]
-LOG_LEVEL_VERBOSE5=5 # [*new]
-LOG_LEVEL_VERBOSE=5 # [*new]
-LOG_LEVEL_NOTSET=0
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-if [ -z ${LOG_LEVEL+x} ]; then
-  LOG_LEVEL=${LOG_LEVEL_ERROR}
-fi
+export_log_levels () {
+  # The Python logging library defines the following levels,
+  # along with some levels I've slid in.
+  export LOG_LEVEL_FATAL=186 # [*probably what it really should be]
+  export LOG_LEVEL_CRITICAL=50
+  export LOG_LEVEL_FATAL=50 # [*aliases CRITICAL]
+  export LOG_LEVEL_ERROR=40
+  export LOG_LEVEL_WARNING=30 # [*also WARN]
+  export LOG_LEVEL_NOTICE=25 # [*new]
+  export LOG_LEVEL_INFO=20
+  export LOG_LEVEL_DEBUG=15
+  export LOG_LEVEL_TRACE=10 # [*new]
+  export LOG_LEVEL_VERBOSE1=9 # [*new]
+  export LOG_LEVEL_VERBOSE2=8 # [*new]
+  export LOG_LEVEL_VERBOSE3=7 # [*new]
+  export LOG_LEVEL_VERBOSE4=6 # [*new]
+  export LOG_LEVEL_VERBOSE5=5 # [*new]
+  export LOG_LEVEL_VERBOSE=5 # [*new]
+  export LOG_LEVEL_NOTSET=0
+
+  if [ -z ${LOG_LEVEL+x} ]; then
+    export LOG_LEVEL=${LOG_LEVEL_ERROR}
+  fi
+}
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
 _echo () {
   [ "$(echo -e)" = '' ] && echo -e "${@}" || echo "${@}"
@@ -129,6 +135,9 @@ test_logger () {
 main () {
   source_deps
   unset -f source_deps
+
+  export_log_levels
+  unset -f export_log_levels
 }
 
 main "$@"
