@@ -1,9 +1,7 @@
 #!/bin/bash
-# vim:tw=0:ts=2:sw=2:et:norl:
-# Project: https://github.com/landonb/home-fries
-# License: GPLv3
-
-# Summary: Colorful Bash Logger
+# vim:tw=0:ts=2:sw=2:et:norl:ft=sh
+# Project: https://github.com/landonb/sh-logger#🎮🐸
+# License: MIT
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
