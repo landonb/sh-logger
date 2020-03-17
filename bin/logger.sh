@@ -118,7 +118,9 @@ verbose () {
   _sh_logger_log_msg "${LOG_LEVEL_VERBOSE}" "$(fg_mediumgrey)" VERB "$@"
 }
 
-test_logger () {
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
+
+test_sh_logger () {
   fatal "FATAL: I'm gonna die!"
   critical "CRITICAL: Take me to a hospital!"
   error "ERROR: Oops! I did it again!!"
@@ -165,4 +167,13 @@ main () {
 
 main "$@"
 unset -f main
+
+if [[ ${BASH_SOURCE[0]} != $0 ]]; then
+  :  # No-op. Already called main to update environment.
+else
+  # This script is not executable. But if it were to
+  # be made so, just run test function, whatever.
+  test_sh_logger
+  exit 0
+fi
 
