@@ -66,9 +66,7 @@ _sh_logger_log_msg () {
   local FCN_LABEL="$3"
   shift 3
   if [ ${FCN_LEVEL} -ge ${LOG_LEVEL} ]; then
-    #echo "${FCN_COLOR} $@"
     local RIGHT_NOW
-    #RIGHT_NOW=$(date +%Y-%m-%d.%H.%M.%S)
     RIGHT_NOW=$(date "+%Y-%m-%d @ %T")
     local bold_maybe=''
     [ ${FCN_LEVEL} -ge ${LOG_LEVEL_WARNING} ] && bold_maybe=$(attr_bold)
@@ -113,7 +111,7 @@ notice () {
 # - We could name it `infom`, or something.
 # - The author almost never uses `info`.
 # - Users can run just `command info ...`.
-# - I don't care about this too much either way...
+# - I don't care too much about this either way...
 info () {
   _sh_logger_log_msg "${LOG_LEVEL_INFO}" "$(fg_mintgreen)" INFO "$@"
 }
