@@ -5,7 +5,7 @@
   "scripts": [ "bin/logger.sh" ],
   "install": "make install",
   "dependencies": {
-    "landonb/sh-colorlib": "master"
+    "landonb/sh-colors": "master"
   }
 }
 
