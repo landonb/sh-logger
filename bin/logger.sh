@@ -6,13 +6,26 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
 source_deps () {
-  local curdir="${HOMEFRIES_LIB:-${HOME}/.homefries/lib}"
-  if [ -n "${BASH_SOURCE}" ]; then
-    curdir=$(dirname -- "${BASH_SOURCE[0]}")
-  fi
+  local depsnok=false
 
-  # Load colors.
-  . ${curdir}/color_funcs.sh
+  _source_it () {
+    local file="$1"
+    if [ -f "./deps/${file}" ]; then
+      # E.g., because, e.g., `bpkg install landonb/sh-colors`.
+      . "./deps/${file}"
+    elif command -v "${file}" > /dev/null; then
+      # E.g., because user put on PATH.
+      . "${file}"
+    else
+      >&2 echo "MISSING: ‘${file}’ not found in ./deps or on PATH."
+      depsnok=true
+    fi
+  }
+
+  # https://github.com/landonb/sh-colors
+  _source_it "colors.sh"
+
+  ${depsnok} && exit 1 || return 0
 }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
