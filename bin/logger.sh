@@ -97,8 +97,11 @@ notice () {
   _sh_logger_log_msg "${LOG_LEVEL_NOTICE}" "$(fg_lime)" NOTC "$@"
 }
 
-# FIXME: Shadows /usr/bin/info
-#        Name it `infom`?
+# MAYBE: This 'info' functions shadows /usr/bin/info
+# - We could name it `infom`, or something.
+# - The author almost never uses `info`.
+# - Users can run just `command info ...`.
+# - I don't care about this too much either way...
 info () {
   _sh_logger_log_msg "${LOG_LEVEL_INFO}" "$(fg_mintgreen)" INFO "$@"
 }
@@ -128,12 +131,36 @@ test_logger () {
   verbose "VERBOSE: I'M YELLING AT YOU"
 }
 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
+
+export_log_funcs () {
+  # (lb): This function isn't necessary, but it's a nice list of
+  # available functions.
+  export -f fatal
+  export -f critical
+  export -f error
+  export -f warning
+  export -f warn
+  export -f notice
+  # NOTE: This 'info' shadows the builtin,
+  #       now accessible at `command info`.
+  export -f info
+  export -f debug
+  export -f trace
+  export -f verbose
+}
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
+
 main () {
   source_deps
   unset -f source_deps
 
   export_log_levels
   unset -f export_log_levels
+
+  export_log_funcs
+  unset -f export_log_funcs
 }
 
 main "$@"
