@@ -6,28 +6,33 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
 source_deps () {
+  local prefix="$1"
   local depsnok=false
 
   _source_it () {
-    local file="$1"
-    local depd="$2"
+    local prfx="${1:-.}"
+    local depd="${2:-.}"
+    local file="${3:-.}"
+    local path="${prfx}/${depd}/${file}"
     if command -v "${file}" > /dev/null; then
       # Use version found on PATH.
       . "${file}"
-    elif [ -f "../${depd}/${file}" ]; then
+    elif [ -f "${path}" ]; then
       # Fallback on local deps/ copy.
       # NOTE: `dash` complains if missing './'.
-      . "../${depd}/${file}"
+      . "${path}"
     else
-      >&2 echo "MISSING: ‘${file}’ not found in ./deps or on PATH."
+      local depstxt=''
+      [ "${prfx}" != "." ] && depstxt="in ‘${prfx}/${depd}’ or "
+      >&2 echo "MISSING: ‘${file}’ not found ${depstxt}on PATH."
       depsnok=true
     fi
   }
 
   # https://github.com/landonb/sh-colors
-  _source_it "colors.sh" "deps/sh-colors/bin"
+  _source_it "${prefix}" "../deps/sh-colors/bin" "colors.sh"
 
-  ${depsnok} && exit 1 || return 0
+  ${depsnok}
 }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
@@ -164,29 +169,26 @@ export_log_funcs () {
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-main () {
-  source_deps
-  unset -f source_deps
-
-  export_log_levels
-  unset -f export_log_levels
-}
-
-main "$@"
-unset -f main
-
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
-
 this_file_name="logger.sh"
 shell_sourced () { [ "$(basename -- "$0")" != "${this_file_name}" ]; }
 # Note that bash_sourced only meaningful if shell_sourced is true.
 bash_sourced () { declare -p FUNCNAME > /dev/null 2>&1; }
 
 if ! shell_sourced; then
+  source_deps "$(dirname -- "$0")"
   LOG_LEVEL=0 test_sh_logger
-elif bash_sourced; then
-  export_log_funcs
+else
+  if bash_sourced; then
+    source_deps "$(dirname -- "${BASH_SOURCE[0]}")"
+  else
+    # Sourced, but not in Bash, so $0 is, e.g., '-dash', and BASH_SOURCE
+    # not set. Not our problem; user need to configure PATH in the case.
+    source_deps
+  fi
+  export_log_levels
+  unset -f export_log_levels
+  # Ignore failure, i.e., outside Bash, `export -f` not defined.
+  export_log_funcs > /dev/null 2>&1
+  unset -f export_log_funcs
 fi
-
-unset -f export_log_funcs
 
