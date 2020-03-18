@@ -190,9 +190,13 @@ else
     source_deps
   fi
   export_log_levels
-  unset -f export_log_levels
   # Ignore failure, i.e., outside Bash, `export -f` not defined.
   export_log_funcs > /dev/null 2>&1
+  unset -f export_log_levels
   unset -f export_log_funcs
+
+  unset this_file_name
+  unset -f shell_sourced
+  unset -f bash_sourced
 fi
 
