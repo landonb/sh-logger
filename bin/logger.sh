@@ -184,14 +184,13 @@ if ! shell_sourced; then
 else
   if bash_sourced; then
     source_deps "${BASH_SOURCE[0]}"
+    export_log_funcs
   else
     # Sourced, but not in Bash, so $0 is, e.g., '-dash', and BASH_SOURCE
     # not set. Not our problem; user need to configure PATH in the case.
     source_deps
   fi
   export_log_levels
-  # Ignore failure, i.e., outside Bash, `export -f` not defined.
-  export_log_funcs > /dev/null 2>&1
   unset -f export_log_levels
   unset -f export_log_funcs
 
