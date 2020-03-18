@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # vim:tw=0:ts=2:sw=2:et:norl:ft=sh
 # Project: https://github.com/landonb/sh-logger#🎮🐸
 # License: MIT
@@ -170,20 +170,23 @@ main () {
 
   export_log_levels
   unset -f export_log_levels
-
-  export_log_funcs
-  unset -f export_log_funcs
 }
 
 main "$@"
 unset -f main
 
-if [[ ${BASH_SOURCE[0]} != $0 ]]; then
-  :  # No-op. Already called main to update environment.
-else
-  # This script is not executable. But if it were to
-  # be made so, just run test function, whatever.
-  test_sh_logger
-  exit 0
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
+
+this_file_name="logger.sh"
+shell_sourced () { [ "$(basename -- "$0")" != "${this_file_name}" ]; }
+# Note that bash_sourced only meaningful if shell_sourced is true.
+bash_sourced () { declare -p FUNCNAME > /dev/null 2>&1; }
+
+if ! shell_sourced; then
+  LOG_LEVEL=0 test_sh_logger
+elif bash_sourced; then
+  export_log_funcs
 fi
+
+unset -f export_log_funcs
 
