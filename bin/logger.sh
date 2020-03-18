@@ -6,7 +6,8 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
 source_deps () {
-  local prefix="$1"
+  local thispth="$1"
+  local prefix=""
   local depsnok=false
 
   _source_it () {
@@ -28,6 +29,9 @@ source_deps () {
       depsnok=true
     fi
   }
+
+  # Allow user to symlink executables and not libraries.
+  prefix="$(dirname -- "$(readlink -e -- "${thispth}")")"
 
   # https://github.com/landonb/sh-colors
   _source_it "${prefix}" "../deps/sh-colors/bin" "colors.sh"
@@ -175,11 +179,11 @@ shell_sourced () { [ "$(basename -- "$0")" != "${this_file_name}" ]; }
 bash_sourced () { declare -p FUNCNAME > /dev/null 2>&1; }
 
 if ! shell_sourced; then
-  source_deps "$(dirname -- "$0")"
+  source_deps "$0"
   LOG_LEVEL=0 test_sh_logger
 else
   if bash_sourced; then
-    source_deps "$(dirname -- "${BASH_SOURCE[0]}")"
+    source_deps "${BASH_SOURCE[0]}"
   else
     # Sourced, but not in Bash, so $0 is, e.g., '-dash', and BASH_SOURCE
     # not set. Not our problem; user need to configure PATH in the case.
