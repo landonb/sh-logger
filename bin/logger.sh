@@ -36,7 +36,7 @@ source_deps () {
   # https://github.com/landonb/sh-colors
   _source_it "${prefix}" "../deps/sh-colors/bin" "colors.sh"
 
-  ${depsnok}
+  ! ${depsnok}
 }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
