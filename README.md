@@ -1,6 +1,6 @@
 # `sh-logger`
 
-Python-esque loggers (and log levels) for the shell.
+POSIX-compliant, Python-esque loggers (and log levels) for the shell.
 
 *Enrich your command line!*
 
