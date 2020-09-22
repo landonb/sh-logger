@@ -126,9 +126,6 @@ export_log_levels () {
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-_sh_logger_echo () {
-  [ "$(echo -e)" = '' ] && echo -e "${@}" || echo "${@}"
-}
 
 _sh_logger_log_msg () {
   local FCN_LEVEL="$1"
@@ -143,9 +140,12 @@ _sh_logger_log_msg () {
     local invert_maybe=''
     [ ${FCN_LEVEL} -ge ${LOG_LEVEL_WARNING} ] && invert_maybe=$(bg_maroon)
     [ ${FCN_LEVEL} -ge ${LOG_LEVEL_ERROR} ] && invert_maybe=$(bg_hotpink)
-    local echo_msg
-    echo_msg="${FCN_COLOR}$(attr_underline)[${FCN_LABEL}]$(attr_reset) ${RIGHT_NOW} ${bold_maybe}${invert_maybe}$@$(attr_reset)"
-    _sh_logger_echo "${echo_msg}"
+    local prefix
+    prefix="${FCN_COLOR}$(attr_underline)[${FCN_LABEL}]$(attr_reset) ${RIGHT_NOW} ${bold_maybe}${invert_maybe}"
+    (
+      IFS=" "
+      printf "${prefix}%b$(attr_reset)\n" "$*"
+    )
   fi
 }
 
