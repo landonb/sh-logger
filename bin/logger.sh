@@ -98,6 +98,12 @@ _sh_logger_log_msg () {
 
   shift 3
 
+  # Verify LOG_LEVEL is an integer. Note the -eq spews when it fails, e.g.:
+  #   bash: [: <foo>: integer expression expected
+  ! [ "${LOG_LEVEL}" -eq "${LOG_LEVEL}" ] \
+    && >&2 echo "WARNING: Resetting LOG_LEVEL, not an integer" \
+    && export LOG_LEVEL=
+
   if [ ${FCN_LEVEL} -ge ${LOG_LEVEL:-${LOG_LEVEL_ERROR}} ]; then
     local RIGHT_NOW
     RIGHT_NOW=$(date "+%Y-%m-%d @ %T")
