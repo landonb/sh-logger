@@ -91,12 +91,13 @@ export_log_levels () {
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-
 _sh_logger_log_msg () {
   local FCN_LEVEL="$1"
   local FCN_COLOR="$2"
   local FCN_LABEL="$3"
+
   shift 3
+
   if [ ${FCN_LEVEL} -ge ${LOG_LEVEL:-${LOG_LEVEL_ERROR}} ]; then
     local RIGHT_NOW
     RIGHT_NOW=$(date "+%Y-%m-%d @ %T")
