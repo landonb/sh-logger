@@ -123,28 +123,34 @@ _sh_logger_log_msg () {
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
+# LOG_LEVEL_FATAL=50
 fatal () {
   _sh_logger_log_msg "${LOG_LEVEL_FATAL}" "$(bg_white)$(fg_lightred)$(attr_bold)" FATL "$@"
   # So that errexit can be used to stop execution.
   return 1
 }
 
+# LOG_LEVEL_CRITICAL=50
 critical () {
   _sh_logger_log_msg "${LOG_LEVEL_CRITICAL}" "$(bg_pink)$(fg_black)$(attr_bold)" CRIT "$@"
 }
 
+# LOG_LEVEL_ERROR=40
 error () {
   critical "$@"
 }
 
+# LOG_LEVEL_WARNING=30
 warning () {
   _sh_logger_log_msg "${LOG_LEVEL_WARNING}" "$(fg_hotpink)$(attr_bold)" WARN "$@"
 }
 
+# LOG_LEVEL_WARNING=30
 warn () {
   warning "$@"
 }
 
+# LOG_LEVEL_NOTICE=25
 notice () {
   _sh_logger_log_msg "${LOG_LEVEL_NOTICE}" "$(fg_lime)" NOTC "$@"
 }
@@ -154,21 +160,27 @@ notice () {
 # - The author almost never uses `info`.
 # - Users can run just `command info ...`.
 # - I don't care too much about this either way...
+# LOG_LEVEL_INFO=20
 info () {
   _sh_logger_log_msg "${LOG_LEVEL_INFO}" "$(fg_mintgreen)" INFO "$@"
 }
 
+# LOG_LEVEL_DEBUG=15
 debug () {
   _sh_logger_log_msg "${LOG_LEVEL_DEBUG}" "$(fg_jade)" DBUG "$@"
 }
 
+# LOG_LEVEL_TRACE=10
 trace () {
   _sh_logger_log_msg "${LOG_LEVEL_TRACE}" "$(fg_mediumgrey)" TRCE "$@"
 }
 
+# LOG_LEVEL_VERBOSE=5
 verbose () {
   _sh_logger_log_msg "${LOG_LEVEL_VERBOSE}" "$(fg_mediumgrey)" VERB "$@"
 }
+
+# LOG_LEVEL_NOTSET=0
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
