@@ -123,6 +123,10 @@ _sh_logger_log_msg () {
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
+# BWARE/2023-12-26: There are two extreme log levels, both 50, but one
+# is nonlethal (`critical`) while the other (`fatal`) returns nonzero
+# and can be used to trip errexit.
+
 # LOG_LEVEL_FATAL=50
 fatal () {
   _sh_logger_log_msg "${LOG_LEVEL_FATAL}" "$(bg_white)$(fg_lightred)$(attr_bold)" FATL "$@"
@@ -135,10 +139,14 @@ critical () {
   _sh_logger_log_msg "${LOG_LEVEL_CRITICAL}" "$(bg_pink)$(fg_black)$(attr_bold)" CRIT "$@"
 }
 
+# ***
+
 # LOG_LEVEL_ERROR=40
 error () {
   critical "$@"
 }
+
+# ***
 
 # LOG_LEVEL_WARNING=30
 warning () {
@@ -150,10 +158,14 @@ warn () {
   warning "$@"
 }
 
+# ***
+
 # LOG_LEVEL_NOTICE=25
 notice () {
   _sh_logger_log_msg "${LOG_LEVEL_NOTICE}" "$(fg_lime)" NOTC "$@"
 }
+
+# ***
 
 # MAYBE: This 'info' functions shadows /usr/bin/info
 # - We could name it `infom`, or something.
@@ -165,20 +177,28 @@ info () {
   _sh_logger_log_msg "${LOG_LEVEL_INFO}" "$(fg_mintgreen)" INFO "$@"
 }
 
+# ***
+
 # LOG_LEVEL_DEBUG=15
 debug () {
   _sh_logger_log_msg "${LOG_LEVEL_DEBUG}" "$(fg_jade)" DBUG "$@"
 }
+
+# ***
 
 # LOG_LEVEL_TRACE=10
 trace () {
   _sh_logger_log_msg "${LOG_LEVEL_TRACE}" "$(fg_mediumgrey)" TRCE "$@"
 }
 
+# ***
+
 # LOG_LEVEL_VERBOSE=5
 verbose () {
   _sh_logger_log_msg "${LOG_LEVEL_VERBOSE}" "$(fg_mediumgrey)" VERB "$@"
 }
+
+# ***
 
 # LOG_LEVEL_NOTSET=0
 
