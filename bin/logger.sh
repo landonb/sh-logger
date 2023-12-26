@@ -143,7 +143,8 @@ critical () {
 
 # LOG_LEVEL_ERROR=40
 error () {
-  critical "$@"
+  # Same style as critical
+  _sh_logger_log_msg "${LOG_LEVEL_CRITICAL}" "$(bg_pink)$(fg_black)$(attr_bold)" ERRR "$@"
 }
 
 # ***
