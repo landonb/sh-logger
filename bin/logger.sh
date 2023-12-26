@@ -158,6 +158,10 @@ warn () {
   warning "$@"
 }
 
+alert () {
+  _sh_logger_log_msg "${LOG_LEVEL_WARNING}" "$(fg_hotpink)$(attr_bold)" ALRT "$@"
+}
+
 # ***
 
 # LOG_LEVEL_NOTICE=25
