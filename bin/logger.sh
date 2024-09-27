@@ -122,9 +122,12 @@ _sh_logger_log_msg () {
     local prefix
     prefix="${FCN_COLOR}$(attr_underline)[${FCN_LABEL}]$(attr_reset) ${RIGHT_NOW} ${bold_maybe}${invert_maybe}"
 
+    local newline=''
+    ${LOG_MSG_NO_NEWLINE:-false} || newline='\n'
+
     (
       local IFS=" "
-      printf "${prefix}%b$(attr_reset)\n" "$*"
+      printf "${prefix}%b$(attr_reset)${newline}" "$*"
     )
   fi
 }
