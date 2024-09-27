@@ -111,13 +111,17 @@ _sh_logger_log_msg () {
   if [ ${FCN_LEVEL} -ge ${LOG_LEVEL:-${LOG_LEVEL_ERROR}} ]; then
     local RIGHT_NOW
     RIGHT_NOW=$(date "+%Y-%m-%d @ %T")
+
     local bold_maybe=''
     [ ${FCN_LEVEL} -ge ${LOG_LEVEL_WARNING} ] && bold_maybe=$(attr_bold)
+
     local invert_maybe=''
     [ ${FCN_LEVEL} -ge ${LOG_LEVEL_WARNING} ] && invert_maybe=$(bg_maroon)
     [ ${FCN_LEVEL} -ge ${LOG_LEVEL_ERROR} ] && invert_maybe=$(bg_red)
+
     local prefix
     prefix="${FCN_COLOR}$(attr_underline)[${FCN_LABEL}]$(attr_reset) ${RIGHT_NOW} ${bold_maybe}${invert_maybe}"
+
     (
       local IFS=" "
       printf "${prefix}%b$(attr_reset)\n" "$*"
