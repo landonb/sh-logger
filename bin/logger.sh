@@ -1,5 +1,5 @@
 #!/bin/sh
-# vim:tw=0:ts=2:sw=2:et:norl:ft=sh
+# vim:tw=0:ts=2:sw=2:et:norl:ft=bash
 # Project: https://github.com/landonb/sh-logger#🎮🐸
 # License: MIT
 
