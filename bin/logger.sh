@@ -221,11 +221,11 @@ verbose () {
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
 test_sh_logger () {
-  fatal "FATAL: I'm gonna die!"
+  fatal "FATAL: I'm going down!"
   critical "CRITICAL: Take me to a hospital!"
   error "ERROR: Oops! I did it again!!"
   warn "WARN: This is your last warning."
-  warning "WARNING: You will die someday."
+  warning "WARNING: I lied, one more warning."
   notice "NOTICE: Hear ye, hear ye!!"
   info "INFO: Extra! Extra! Read all about it!!"
   debug "DEBUG: If anyone asks, you're my debugger."
