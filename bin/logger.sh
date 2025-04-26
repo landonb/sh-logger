@@ -34,9 +34,17 @@ _sh_logger_sh__source_deps () {
 
 _sh_logger_sh__smells_like_bash () { declare -p BASH_SOURCE > /dev/null 2>&1; }
 
+# Note that ${BASH_SOURCE} is technically ${BASH_SOURCE[0]}, but for POSIX
+# compatibility, avoid the array index (and note that ${BASH_SOURCE} returns
+# the first array value).
+# - TRYME: You can test the following to confirm:
+#     foo_1 () { echo ${BASH_SOURCE}; echo ${BASH_SOURCE[0]}; echo ${BASH_SOURCE[1]}; }
+#     foo_2 () { foo_1; }
+#     foo_2
+
 _sh_logger_sh__print_this_fullpath () {
   if _sh_logger_sh__smells_like_bash; then
-    echo "$(realpath -- "${BASH_SOURCE[0]}")"
+    echo "$(realpath -- "${BASH_SOURCE}")"
   elif [ "$(basename -- "$0")" = "${_sh_logger_sh__this_filename}" ]; then
     # Assumes this script being executed, and $0 is its path.
     echo "$(realpath -- "$0")"
