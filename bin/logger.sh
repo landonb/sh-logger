@@ -56,8 +56,20 @@ _sh_logger_sh__print_this_fullpath () {
 
 _sh_logger_sh__this_fullpath="$(_sh_logger_sh__print_this_fullpath)"
 
+# $0 might be path to this script, e.g.,
+#   /Users/user/.kit/sh/sh-logger/bin/logger.sh
+# Or:
+#   /Users/user/.kit/sh/home-fries/deps/sh-logger/bin/logger.sh
+# Or it might be path to Bash:
+#   /opt/homebrew/bin/bash
+# Or it might be "-bash", e.g., when shell started via tmux:
+#   -bash
+# Or even just "bash", e.g., when shell started via `bash -c bash`:
+#   bash
 _sh_logger_sh__shell_sourced () {
-  [ "$(realpath -- "$0")" != "${_sh_logger_sh__this_fullpath}" ]
+  [ "$0" = "-bash" ] ||
+    [ "$0" = "bash" ] ||
+    [ "$(realpath -- "$0")" != "${_sh_logger_sh__this_fullpath}" ]
 }
 
 _sh_logger_sh__source_file () {
