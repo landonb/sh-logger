@@ -10,7 +10,7 @@
 
 _sh_logger_sh__this_filename="logger.sh"
 
-_sh_logger_sh__source_deps () {
+_sh_logger_sh__source_deps() {
   local sourced_all=true
 
   # On Bash, user can source this file from anywhere.
@@ -32,7 +32,7 @@ _sh_logger_sh__source_deps () {
   ${sourced_all}
 }
 
-_sh_logger_sh__smells_like_bash () { declare -p BASH_SOURCE > /dev/null 2>&1; }
+_sh_logger_sh__smells_like_bash() { declare -p BASH_SOURCE >/dev/null 2>&1; }
 
 # Note that ${BASH_SOURCE} is technically ${BASH_SOURCE[0]}, but for POSIX
 # compatibility, avoid the array index (and note that ${BASH_SOURCE} returns
@@ -42,7 +42,7 @@ _sh_logger_sh__smells_like_bash () { declare -p BASH_SOURCE > /dev/null 2>&1; }
 #     foo_2 () { foo_1; }
 #     foo_2
 
-_sh_logger_sh__print_this_fullpath () {
+_sh_logger_sh__print_this_fullpath() {
   if _sh_logger_sh__smells_like_bash; then
     echo "$(realpath -- "${BASH_SOURCE}")"
   elif [ "$(basename -- "$0")" = "${_sh_logger_sh__this_filename}" ]; then
@@ -66,13 +66,13 @@ _sh_logger_sh__this_fullpath="$(_sh_logger_sh__print_this_fullpath)"
 #   -bash
 # Or even just "bash", e.g., when shell started via `bash -c bash`:
 #   bash
-_sh_logger_sh__shell_sourced () {
+_sh_logger_sh__shell_sourced() {
   [ "$0" = "-bash" ] ||
     [ "$0" = "bash" ] ||
     [ "$(realpath -- "$0")" != "${_sh_logger_sh__this_fullpath}" ]
 }
 
-_sh_logger_sh__source_file () {
+_sh_logger_sh__source_file() {
   local prfx="${1:-.}"
   local depd="${2:-.}"
   local file="${3:-.}"
@@ -113,10 +113,10 @@ _sh_logger_sh__source_file () {
 
 # BONUS: You can use these aliases instead of the uniquely-named functions,
 # just be aware not to call any alias after calling _source_deps.
-_shell_sourced () { _sh_logger_sh__shell_sourced; }
-_source_deps () { _sh_logger_sh__source_deps; }
+_shell_sourced() { _sh_logger_sh__shell_sourced; }
+_source_deps() { _sh_logger_sh__source_deps; }
 
-_sh_logger_sh__source_deps_unset_cleanup () {
+_sh_logger_sh__source_deps_unset_cleanup() {
   unset -v _sh_logger_sh__this_filename
   unset -f _sh_logger_sh__print_this_fullpath
   unset -f _sh_logger_sh__shell_sourced
@@ -141,7 +141,7 @@ _sh_logger_sh__source_deps_unset_cleanup () {
 
 # ***
 
-export_log_levels () {
+export_log_levels() {
   # The Python logging library defines the following levels,
   # along with some levels I've slid in.
   export LOG_LEVEL_FATAL=50
@@ -175,7 +175,7 @@ export_log_levels () {
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-_sh_logger_log_msg () {
+_sh_logger_log_msg() {
   local FCN_LEVEL="$1"
   local FCN_COLOR="$2"
   local FCN_LABEL="$3"
@@ -184,9 +184,10 @@ _sh_logger_log_msg () {
 
   # Verify LOG_LEVEL is an integer. Note the -eq spews when it fails, e.g.:
   #   bash: [: <foo>: integer expression expected
-  if [ -n "${LOG_LEVEL}" ] \
-    && ! [ "${LOG_LEVEL}" -eq "${LOG_LEVEL}" ] 2>/dev/null \
-  ; then
+  if [ -n "${LOG_LEVEL}" ] &&
+    ! [ "${LOG_LEVEL}" -eq "${LOG_LEVEL}" ] 2>/dev/null \
+    ; then
+
     >&2 echo "WARNING: Resetting LOG_LEVEL, not an integer"
 
     export LOG_LEVEL=
@@ -223,21 +224,21 @@ _sh_logger_log_msg () {
 # and can be used to trip errexit.
 
 # LOG_LEVEL_FATAL=50
-fatal () {
+fatal() {
   _sh_logger_log_msg "${LOG_LEVEL_FATAL}" "$(bg_white)$(fg_lightred)$(attr_bold)" FATL "$@"
   # So that errexit can be used to stop execution.
   return 1
 }
 
 # LOG_LEVEL_CRITICAL=50
-critical () {
+critical() {
   _sh_logger_log_msg "${LOG_LEVEL_CRITICAL}" "$(bg_pink)$(fg_black)$(attr_bold)" CRIT "$@"
 }
 
 # ***
 
 # LOG_LEVEL_ERROR=40
-error () {
+error() {
   # Same style as critical
   _sh_logger_log_msg "${LOG_LEVEL_CRITICAL}" "$(bg_red)$(fg_white)$(attr_bold)" ERRR "$@"
 }
@@ -245,23 +246,23 @@ error () {
 # ***
 
 # LOG_LEVEL_WARNING=30
-warning () {
+warning() {
   _sh_logger_log_msg "${LOG_LEVEL_WARNING}" "$(fg_hotpink)$(attr_bold)" WARN "$@"
 }
 
 # LOG_LEVEL_WARNING=30
-warn () {
+warn() {
   warning "$@"
 }
 
-alert () {
+alert() {
   _sh_logger_log_msg "${LOG_LEVEL_WARNING}" "$(fg_hotpink)$(attr_bold)" ALRT "$@"
 }
 
 # ***
 
 # LOG_LEVEL_NOTICE=25
-notice () {
+notice() {
   _sh_logger_log_msg "${LOG_LEVEL_NOTICE}" "$(fg_lime)" NOTC "$@"
 }
 
@@ -273,28 +274,28 @@ notice () {
 # - Users can run just `command info ...`.
 # - I don't care too much about this either way...
 # LOG_LEVEL_INFO=20
-info () {
+info() {
   _sh_logger_log_msg "${LOG_LEVEL_INFO}" "$(fg_mintgreen)" INFO "$@"
 }
 
 # ***
 
 # LOG_LEVEL_DEBUG=15
-debug () {
+debug() {
   _sh_logger_log_msg "${LOG_LEVEL_DEBUG}" "$(fg_jade)" DBUG "$@"
 }
 
 # ***
 
 # LOG_LEVEL_TRACE=10
-trace () {
+trace() {
   _sh_logger_log_msg "${LOG_LEVEL_TRACE}" "$(fg_mediumgrey)" TRCE "$@"
 }
 
 # ***
 
 # LOG_LEVEL_VERBOSE=5
-verbose () {
+verbose() {
   _sh_logger_log_msg "${LOG_LEVEL_VERBOSE}" "$(fg_mediumgrey)" VERB "$@"
 }
 
@@ -304,7 +305,7 @@ verbose () {
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-test_sh_logger () {
+test_sh_logger() {
   fatal "FATAL: I'm going down!"
   critical "CRITICAL: Take me to a hospital!"
   error "ERROR: Oops! I did it again!!"
@@ -319,7 +320,7 @@ test_sh_logger () {
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-export_log_funcs () {
+export_log_funcs() {
   if ! _sh_logger_sh__smells_like_bash; then
 
     return
@@ -356,4 +357,3 @@ fi
 _sh_logger_sh__source_deps_unset_cleanup
 unset -f export_log_levels
 unset -f export_log_funcs
-
