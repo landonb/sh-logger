@@ -306,16 +306,20 @@ verbose() {
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
 test_sh_logger() {
-  fatal "FATAL: I'm going down!"
-  critical "CRITICAL: Take me to a hospital!"
-  error "ERROR: Oops! I did it again!!"
-  warn "WARN: This is your last warning."
-  warning "WARNING: I lied, one more warning."
-  notice "NOTICE: Hear ye, hear ye!!"
-  info "INFO: Extra! Extra! Read all about it!!"
-  debug "DEBUG: If anyone asks, you're my debugger."
-  trace "TRACE: Not a trace."
-  verbose "VERBOSE: I'M YELLING AT YOU"
+  (
+    LOG_LEVEL=${LOG_LEVEL_NOTSET:-0}
+
+    fatal "FATAL: I'm going down!"
+    critical "CRITICAL: Take me to a hospital!"
+    error "ERROR: Oops! I did it again!!"
+    warn "WARN: This is your last warning."
+    warning "WARNING: I lied, one more warning."
+    notice "NOTICE: Hear ye, hear ye!!"
+    info "INFO: Extra! Extra! Read all about it!!"
+    debug "DEBUG: If anyone asks, you're my debugger."
+    trace "TRACE: Not a trace."
+    verbose "VERBOSE: I'M YELLING AT YOU"
+  )
 }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
